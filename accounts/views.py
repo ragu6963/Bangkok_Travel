@@ -4,6 +4,13 @@ from django.contrib import auth
 
 
 def signup(request):
+    if request.method == "POST":
+        if request.POST["password1"] == request.POST["password2"]:
+            user = User.objects.create_user(
+                request.POST["username"], password=request.POST["password1"]
+            )
+            auth.login(request, user)
+            return redirect("posts:home")
     return render(request, "accounts/signup.html")
 
 
@@ -16,7 +23,6 @@ def signin(request):
             auth.login(request, user)
             return redirect("posts:home")
         else:
-
             return render(
                 request,
                 "signin.html",
@@ -24,3 +30,11 @@ def signin(request):
             )
     else:
         return render(request, "accounts/signin.html")
+
+
+def signout(request):
+    if request.method == "POST":
+        auth.logout(request)
+        return redirect("posts:home")
+
+    return render(request, "accounts/signup.html")

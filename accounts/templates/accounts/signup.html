@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action="{%url 'signup'%}" method="post">
+<form action="{%url 'accounts:signup'%}" method="post">
   {%csrf_token%}
   Username:
   <br>
