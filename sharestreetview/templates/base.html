@@ -19,6 +19,17 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'posts:home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'posts:index' %}">index</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'posts:create' %}">create</a>
+          </li>
+        </ul>
         <form class="d-flex" method="POST" action="{% url 'accounts:signout' %}">
           {%csrf_token%}
           <button class="btn btn-outline-success" type="submit">로그아웃</button>
