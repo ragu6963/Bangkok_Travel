@@ -2,43 +2,18 @@
 {% load static %}
 
 {% block head %}
+{# google map Api 설정 스크립트 #}
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-<script>
-  function initialize() {
-    lat = "{{post.lat}}"
-    lng = "{{post.lng}}"
-    console.log(lat, lng)
-    const fenway = {
-      lat: Number(lat),
-      lng: Number(lng),
-    };
-    const map = new google.maps.Map(document.getElementById("map"), {
-      center: fenway,
-      zoom: 14,
-    });
-    const panorama = new google.maps.StreetViewPanorama(
-      document.getElementById("pano"), {
-        position: fenway,
-        pov: {
-          heading: 34,
-          pitch: 10,
-        },
-      }
-    );
-    map.setStreetView(panorama);
-  }
-</script>
-
+{# map script 컴포넌트 #}
+{% include 'map.html' with lat=post.lat lng=post.lng %}
 <link rel="stylesheet" href="{% static 'posts/css/map.css' %}">
 {% endblock head %}
 
-
 {% block content %}
 <div class="d-flex justify-content-center">
-  <div id="map"></div>
-  <div id="pano"></div>
+  <div class="map" id="map"></div>
+  <div class="pano" id="pano"></div>
 </div>
-
 <a href="{% url 'posts:index' %}">돌아가기</a>
 {% if post.user == user %}
 <form action="{% url 'posts:update' post.id %}">
@@ -49,11 +24,11 @@
   <button>삭제</button>
 </form>
 {% endif %}
-{% endblock content %}
 
-
-{% block body %}
 <script src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&callback=initialize&libraries=&v=weekly"
   async>
 </script>
+{% endblock content %}
+{% block body %}
+
 {% endblock body %}

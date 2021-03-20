@@ -1,0 +1,38 @@
+{# map 여러개 생성 컴포넌트 #}
+<script>
+  function initialize() {
+    lat_list = "{{lat_list}}".replace("[", "").replace("]", "").replace('"', "").split(",")
+    lng_list = "{{lng_list}}".replace("[", "").replace("]", "").replace('"', "").split(",")
+    id_list = "{{id_list}}".replace("[", "").replace("]", "").replace('"', "").split(",")
+
+    map_list = []
+    for (i = 0; i < lat_list.length; i++) {
+      lat = lat_list[i].trim()
+      lng = lng_list[i].trim()
+      id = id_list[i].trim()
+      mapId = "map" + String(id)
+      panoId = "pano" + String(id)
+
+      const fenway = {
+        lat: Number(lat),
+        lng: Number(lng),
+      };
+
+      const map = new google.maps.Map(document.getElementById(mapId), {
+        center: fenway,
+        zoom: 14,
+      });
+
+      const panorama = new google.maps.StreetViewPanorama(
+        document.getElementById(panoId), {
+          position: fenway,
+          pov: {
+            heading: 34,
+            pitch: 10,
+          },
+        }
+      );
+      map.setStreetView(panorama);
+    }
+  }
+</script>

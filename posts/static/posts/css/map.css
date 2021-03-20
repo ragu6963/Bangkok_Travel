@@ -5,8 +5,8 @@ body {
   padding: 0;
 }
 
-#map,
-#pano {
+.map,
+.pano {
   height: 50vh;
   width: 100%;
 }

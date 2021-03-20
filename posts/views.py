@@ -9,9 +9,21 @@ from django.contrib.auth.decorators import login_required
 @require_safe
 def home(request):
     posts = Post.objects.all()
+    MAPS_API_KEY = settings.MAPS_API_KEY
+    lat_list = []
+    lng_list = []
+    id_list = []
+    for post in posts:
+        lat_list.append(post.lat)
+        lng_list.append(post.lng)
+        id_list.append(post.id)
 
     context = {
         "posts": posts,
+        "lat_list": lat_list,
+        "lng_list": lng_list,
+        "id_list": id_list,
+        "MAPS_API_KEY": MAPS_API_KEY,
     }
     return render(request, "posts/home.html", context)
 
@@ -48,7 +60,7 @@ def create(request):
 
             # Post 인스턴스 저장
             post.save()
-            return redirect("posts:index")
+            return redirect("posts:home")
     else:
         form = PostForm
 
@@ -120,6 +132,6 @@ def delete(request, pk):
 
     if request.method == "POST":
         post.delete()
-        return redirect("posts:index")
+        return redirect("posts:home")
 
     return redirect("posts:detail", post.id)
