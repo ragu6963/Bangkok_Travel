@@ -30,6 +30,17 @@ with open(secret_file) as f:
 SECRET_KEY = secrets["SECRET_KEY"]
 MAPS_API_KEY = secrets["MAPS_API_KEY"]
 
+# Google OAuth2 설정
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = secrets["SOCIAL_AUTH_GOOGLE_OAUTH2_KEY"]
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = secrets["SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET"]
+
+# Google OAuth2 Url
+LOGIN_URL = "/auth/login/google-oauth2/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+SOCIAL_AUTH_URL_NAMESPACE = "social"
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -40,8 +51,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "posts",
-    "accounts",
-    "bootstrap5",
+    # "accounts", # django 인증 App
+    "bootstrap5",  # django bootstrap App
+    "social_django",  # google OAuth2 설정 App
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -49,6 +61,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
+# google OAuth2 설정
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.google.GoogleOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
