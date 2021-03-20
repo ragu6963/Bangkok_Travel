@@ -8,17 +8,18 @@ from django.contrib.auth.decorators import login_required
 
 @require_safe
 def home(request):
-    return render(request, "posts/home.html")
-
-
-@require_safe
-def index(request):
     posts = Post.objects.all()
 
     context = {
         "posts": posts,
     }
-    return render(request, "posts/index.html", context)
+    return render(request, "posts/home.html", context)
+
+
+@require_safe
+def index(request):
+
+    return render(request, "posts/index.html")
 
 
 @login_required(login_url="accounts:login", redirect_field_name="")
@@ -44,6 +45,7 @@ def create(request):
             post.lng = lng
             post.url = url
             post.user = request.user
+
             # Post 인스턴스 저장
             post.save()
             return redirect("posts:index")
@@ -72,6 +74,8 @@ def detail(request, pk):
 @require_http_methods(["GET", "POST"])
 def update(request, pk):
     post = Post.objects.get(pk=pk)
+    if post.user != request.user:
+        return redirect("posts:detail", post.id)
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
@@ -111,6 +115,8 @@ def update(request, pk):
 @require_http_methods(["POST"])
 def delete(request, pk):
     post = Post.objects.get(pk=pk)
+    if post.user != request.user:
+        return redirect("posts:detail", post.id)
 
     if request.method == "POST":
         post.delete()
