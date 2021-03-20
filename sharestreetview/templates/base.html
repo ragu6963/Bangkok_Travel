@@ -6,21 +6,24 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {# fontawesom CDN #}
+  <script src="https://kit.fontawesome.com/5ac56ffa94.js" crossorigin="anonymous"></script>
   {% bootstrap_css %}
-  {% block head %}{% endblock head %}
+  {% block head %}
+  {% endblock head %}
   <title>방콕여행</title>
-
-
 </head>
 
 <body>
+  {# navbar 컴포넌트 #}
   {% include 'nav.html' %}
+
   <div class="container">
     {% block content %}
     {% endblock content %}
   </div>
-  {% bootstrap_javascript %}
 
+  {% bootstrap_javascript %}
   {% block body %}
   {% endblock body %}
 </body>

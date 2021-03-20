@@ -14,7 +14,9 @@
   </ul>
 </li>
 {% else %}
-<li class="nav-item">
-  <a class="nav-link" href="{% url 'accounts:login' %}">login</a>
-</li>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  로그인
+</button>
+{% include "login_modal.html" %}
+
 {% endif %}
