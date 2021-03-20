@@ -14,7 +14,10 @@
   <div id="map"></div>
   <div id="pano"></div>
 </div>
+<input type="button" value="Toggle Street View" onclick="toggleStreetView();" />
 <a href="{% url 'posts:home' %}">돌아가기</a>
+
+
 {% if post.user == user %}
 <form action="{% url 'posts:update' post.id %}">
   <button>수정</button>

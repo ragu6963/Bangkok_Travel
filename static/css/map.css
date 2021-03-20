@@ -5,8 +5,7 @@ body {
   padding: 0;
 }
 
-#map,
-#pano {
+#map {
   height: 50vh;
   width: 100%;
 }
