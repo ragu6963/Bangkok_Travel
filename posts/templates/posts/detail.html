@@ -40,6 +40,7 @@
 </div>
 
 <a href="{% url 'posts:index' %}">돌아가기</a>
+{% if post.user == user %}
 <form action="{% url 'posts:update' post.id %}">
   <button>수정</button>
 </form>
@@ -47,7 +48,9 @@
   {% csrf_token %}
   <button>삭제</button>
 </form>
+{% endif %}
 {% endblock content %}
+
 
 {% block body %}
 <script src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&callback=initialize&libraries=&v=weekly"
