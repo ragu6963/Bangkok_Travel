@@ -13,15 +13,17 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'posts:index' %}">index</a>
         </li>
+        {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'posts:create' %}">create</a>
         </li>
+        {% endif %}
       </ul>
       {% if user.is_authenticated %}
       <p>Logged as {{ user.username }}</p>
-      <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+      <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Logout</a>
       {% else %}
-      <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
+      <a class="btn btn-primary" href="{% url 'accounts:login' %}">
         Login
       </a>
       {% endif %}

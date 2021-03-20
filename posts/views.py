@@ -3,6 +3,7 @@ from django.conf import settings
 from .models import Post
 from .forms import PostForm
 from django.views.decorators.http import require_http_methods, require_safe
+from django.contrib.auth.decorators import login_required
 
 
 @require_safe
@@ -20,6 +21,7 @@ def index(request):
     return render(request, "posts/index.html", context)
 
 
+@login_required(login_url="accounts:login", redirect_field_name="")
 @require_http_methods(["GET", "POST"])
 def create(request):
     if request.method == "POST":
@@ -66,6 +68,7 @@ def detail(request, pk):
     return render(request, "posts/detail.html", context)
 
 
+@login_required(login_url="accounts:login", redirect_field_name="")
 @require_http_methods(["GET", "POST"])
 def update(request, pk):
     post = Post.objects.get(pk=pk)
@@ -104,6 +107,7 @@ def update(request, pk):
     return render(request, "posts/update.html", context)
 
 
+@login_required(login_url="accounts:login", redirect_field_name="")
 @require_http_methods(["POST"])
 def delete(request, pk):
     post = Post.objects.get(pk=pk)

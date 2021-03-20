@@ -51,7 +51,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "posts",
-    # "accounts", # django 인증 App
+    "accounts",  # User App
     "bootstrap5",  # django bootstrap App
     "social_django",  # google OAuth2 설정 App
     "django.contrib.admin",
