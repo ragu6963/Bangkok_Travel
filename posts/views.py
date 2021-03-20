@@ -8,21 +8,10 @@ from django.contrib.auth.decorators import login_required
 
 @require_safe
 def home(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by("-created_at")
     MAPS_API_KEY = settings.MAPS_API_KEY
-    lat_list = []
-    lng_list = []
-    id_list = []
-    for post in posts:
-        lat_list.append(post.lat)
-        lng_list.append(post.lng)
-        id_list.append(post.id)
-
     context = {
         "posts": posts,
-        "lat_list": lat_list,
-        "lng_list": lng_list,
-        "id_list": id_list,
         "MAPS_API_KEY": MAPS_API_KEY,
     }
     return render(request, "posts/home.html", context)
@@ -43,8 +32,10 @@ def create(request):
             # url에서 위도 경도 추출
             url = form.cleaned_data["url"]
             split_url = url.split(",")
-            lat = split_url[0].split("@")[1]
-            lng = split_url[1]
+            lat = float(split_url[0].split("@")[1])
+            lng = float(split_url[1])
+            heading = float(split_url[4].replace("h", ""))
+            pitch = float(split_url[5].split("t")[0]) - float(90)
 
             # Post 인스턴스 변수 생성
             post = Post()
@@ -56,8 +47,9 @@ def create(request):
             post.lat = lat
             post.lng = lng
             post.url = url
+            post.heading = heading
+            post.pitch = pitch
             post.user = request.user
-
             # Post 인스턴스 저장
             post.save()
             return redirect("posts:home")

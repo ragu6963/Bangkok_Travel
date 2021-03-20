@@ -5,16 +5,16 @@
 {# google map Api 설정 스크립트 #}
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 {# map script 컴포넌트 #}
-{% include 'map.html' with lat=post.lat lng=post.lng %}
-<link rel="stylesheet" href="{% static 'posts/css/map.css' %}">
+{% include 'map.html' with lat=post.lat lng=post.lng heading=post.heading pitch=post.pitch  %}
+<link rel="stylesheet" href="{% static 'css/map.css' %}">
 {% endblock head %}
 
 {% block content %}
 <div class="d-flex justify-content-center">
-  <div class="map" id="map"></div>
-  <div class="pano" id="pano"></div>
+  <div id="map"></div>
+  <div id="pano"></div>
 </div>
-<a href="{% url 'posts:index' %}">돌아가기</a>
+<a href="{% url 'posts:home' %}">돌아가기</a>
 {% if post.user == user %}
 <form action="{% url 'posts:update' post.id %}">
   <button>수정</button>

@@ -3,6 +3,9 @@
   function initialize() {
     lat = "{{lat}}"
     lng = "{{lng}}"
+    heading = "{{heading}}"
+    pitch = "{{pitch}}"
+
     const fenway = {
       lat: Number(lat),
       lng: Number(lng),
@@ -15,8 +18,8 @@
       document.getElementById("pano"), {
         position: fenway,
         pov: {
-          heading: 34,
-          pitch: 10,
+          heading: Number(heading),
+          pitch: Number(pitch),
         },
       }
     );

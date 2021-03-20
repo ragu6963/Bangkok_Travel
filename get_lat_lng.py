@@ -2,4 +2,7 @@ url = "https://www.google.com/maps/@27.1739164,78.0432149,3a,75y,264.8h,97.86t/d
 lst = url.split(",")
 lat = lst[0].split("@")[1]
 lng = lst[1]
-print(lat, lng)
+pitch = lst[4].replace("h", "")
+heading = lst[5].split("t")[0]
+print(lst)
+print(lat, lng, pitch, heading)
