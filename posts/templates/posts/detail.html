@@ -11,8 +11,7 @@
 
 {% block content %}
 <div class="d-flex justify-content-center">
-  <div id="map"></div>
-  <div id="pano"></div>
+  <div class="map" id="map"></div>
 </div>
 <input type="button" value="Toggle Street View" onclick="toggleStreetView();" />
 <a href="{% url 'posts:home' %}">돌아가기</a>
@@ -28,10 +27,6 @@
 </form>
 {% endif %}
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&callback=initialize&libraries=&v=weekly"
-  async>
-</script>
-{% endblock content %}
-{% block body %}
+{% include "api_key.html" with MAPS_API_KEY=MAPS_API_KEY %}
 
-{% endblock body %}
+{% endblock content %}
