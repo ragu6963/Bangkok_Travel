@@ -12,6 +12,9 @@ class Post(models.Model):
     # 위도 경도
     lat = models.FloatField()
     lng = models.FloatField()
+    # static street view 설정 값
+    heading = models.FloatField(default=0.0)
+    pitch = models.FloatField(default=90.0)
     # 스트리트 뷰 주소
     url = models.URLField(default="")
     # user 관계 생성
