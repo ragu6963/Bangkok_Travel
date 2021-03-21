@@ -19,7 +19,7 @@
   {# 수정 삭제 버튼 #}
   {% if post.user == user %}
   <div class="d-flex justify-content-end gap-2 mb-3">
-    <a class="text-decoration-none text-muted fs-7" href="">수정</a>
+    <a class="text-decoration-none text-muted fs-7" href="{% url 'posts:update' post.id %}">수정</a>
     <a class="text-decoration-none text-muted fs-7" href="">삭제</a>
   </div>
   {% endif %}

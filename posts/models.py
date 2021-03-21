@@ -19,3 +19,5 @@ class Post(models.Model):
     url = models.URLField(default="")
     # user 관계 생성
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # static street view image
+    static_image = models.ImageField(default="static/img/default.png")

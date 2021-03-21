@@ -4,6 +4,7 @@ from .models import Post
 from .forms import PostForm
 from django.views.decorators.http import require_http_methods, require_safe
 from django.contrib.auth.decorators import login_required
+import requests
 
 
 @require_safe
@@ -52,6 +53,23 @@ def create(request):
             post.user = request.user
             # Post 인스턴스 저장
             post.save()
+
+            base_url = (
+                "https://maps.googleapis.com/maps/api/streetview?size=400x400"
+            )
+            static_image_url = f"{base_url}&location={post.lat},{post.lng}&fov=80&pitch={post.pitch}&heading={post.heading}&key={settings.MAPS_API_KEY}"
+            static_image = requests.get(static_image_url)
+            with open(
+                f"{settings.MEDIA_ROOT}/posts/thumnail/{post.id}.jpg", "wb"
+            ) as file:
+                file.write(static_image.content)
+                post.static_image = (
+                    f"{settings.MEDIA_URL}posts/thumnail/{post.id}.jpg"
+                )
+
+            # Post static_image 경로 저장
+            post.save()
+
             return redirect("posts:home")
     else:
         form = PostForm
@@ -95,6 +113,17 @@ def update(request, pk):
             post.lat = lat
             post.lng = lng
             post.url = url
+            base_url = (
+                "https://maps.googleapis.com/maps/api/streetview?size=400x400"
+            )
+            static_image_url = f"{base_url}&location={post.lat},{post.lng}&fov=80&pitch={post.pitch}&heading={post.heading}&key={settings.MAPS_API_KEY}"
+            static_image = requests.get(static_image_url)
+            with open(
+                f"{settings.MEDIA_ROOT}/posts/thumnail/{post.id}.jpg", "wb"
+            ) as file:
+                file.write(static_image.content)
+
+            # Post static_image 경로 저장
             post.save()
             return redirect("posts:detail", post.id)
 
