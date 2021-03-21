@@ -1,0 +1,54 @@
+{# map 컴포넌트 #}
+<script>
+  let panorama;
+
+  function initialize() {
+    lat = "{{lat}}"
+    lng = "{{lng}}"
+    heading = "{{heading}}"
+    pitch = "{{pitch}}"
+
+    const astorPlace = {
+      lat: Number(lat),
+      lng: Number(lng),
+    };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: astorPlace,
+      zoom: 14,
+      streetViewControl: false,
+      mapTypeControl: false,
+      fullscreenControl: false,
+      zoomControl: false,
+      rotateControl: false,
+    });
+
+    panorama = new google.maps.StreetViewPanorama(
+      document.getElementById("map"), {
+        panControl: false,
+        fullscreenControl: false,
+        addressControl: false,
+      }
+    );
+
+    panorama.setPosition(astorPlace);
+    panorama.setPov(
+      /** @type {google.maps.StreetViewPov} */
+      {
+        heading: Number(heading),
+        pitch: Number(pitch),
+      }
+    );
+    panorama.setVisible(true)
+  }
+
+
+  function toggleStreetView() {
+    const toggle = panorama.getVisible();
+
+    if (toggle) {
+      panorama.setVisible(false);
+    } else {
+      panorama.setVisible(true);
+    }
+  }
+</script>
