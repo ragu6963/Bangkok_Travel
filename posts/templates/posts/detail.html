@@ -40,6 +40,9 @@
   <div class="d-flex justify-content-center">
     <div class="map" id="map"></div>
   </div>
+  <div>
+    {{ post.content|safe }}
+  </div>
   {% include "api_key.html" with MAPS_API_KEY=MAPS_API_KEY %}
 </div>
 {% endblock content %}

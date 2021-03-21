@@ -1,16 +1,21 @@
 <div class="col">
-  <div class="card">
+  <div class="card" style="height:100%;">
     <img src="{{post.static_image}}" class="card-img-top">
     <div class="map visually-hidden" id="map{{post.id}}"></div>
     <div class="pano" id="pano{{post.id}}"></div>
     <div class="card-body">
       <h5 class="card-title">
-        <a class="stretched-link" href="{% url 'posts:detail' post.id %}">{{post.title}}</a>
+        <a class="stretched-link text-decoration-none text-dark fw-bold fs-6"
+          href="{% url 'posts:detail' post.id %}">{{post.title}}</a>
       </h5>
-      <p class="card-text">{{post.content}}</p>
     </div>
-    <div class="card-footer text-muted">
-      {{post.user}}
+    <div class="card-footer fs-8">
+      <span class="text-muted">
+        by
+      </span>
+      <span class="fw-bold">
+        {{post.user}}
+      </span>
     </div>
   </div>
 </div>

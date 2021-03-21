@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    content = models.TextField()
+    # content = models.TextField()
+    content = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # 대륙 카테고리

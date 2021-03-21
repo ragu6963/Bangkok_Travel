@@ -1,10 +1,12 @@
 from django import forms
-from django.forms.widgets import TextInput
+from ckeditor.widgets import CKEditorWidget
 
 
 class PostForm(forms.Form):
     title = forms.CharField(max_length=100)
-    content = forms.CharField(widget=forms.Textarea)
+    # content = forms.CharField(widget=forms.Textarea)
+    content = forms.CharField(widget=CKEditorWidget())
+
     CHOICES = [
         ("asia", "아시아"),
         ("north_amrica", "북아메리카"),

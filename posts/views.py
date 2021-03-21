@@ -30,7 +30,7 @@ def create(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            # url에서 위도 경도 추출
+            # url에서 street view 설정 값 추출
             url = form.cleaned_data["url"]
             split_url = url.split(",")
             lat = float(split_url[0].split("@")[1])
@@ -101,7 +101,7 @@ def update(request, pk):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            # url에서 위도 경도 추출
+            # url에서 street view 설정 값 추출
             url = form.cleaned_data["url"]
             split_url = url.split(",")
             lat = split_url[0].split("@")[1]
@@ -123,7 +123,7 @@ def update(request, pk):
             ) as file:
                 file.write(static_image.content)
 
-            # Post static_image 경로 저장
+            # 수정사항 저장
             post.save()
             return redirect("posts:detail", post.id)
 

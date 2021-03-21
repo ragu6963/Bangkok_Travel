@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "accounts",  # User App
     "bootstrap5",  # django bootstrap App
     "social_django",  # google OAuth2 설정 App
+    "ckeditor",  # 위지윅 에디터 App
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -150,8 +151,10 @@ STATIC_URL = "/static/"
 
 # 추가 static 경로
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "sharestreetview" / "static",
 ]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_ROOT = BASE_DIR / "media"
 
