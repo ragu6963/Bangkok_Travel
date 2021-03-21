@@ -2,11 +2,9 @@
   <div class="card">
     {% comment %}
     <img
-      src="https://maps.googleapis.com/maps/api/streetview?size=800x800&location={{post.lat}},{{post.lng}}&fov=80&pitch={{post.pitch}}&heading={{post.heading}}&key={{MAPS_API_KEY}}"
+      src="https://maps.googleapis.com/maps/api/streetview?size=400x400&location={{post.lat}},{{post.lng}}&fov=80&pitch={{post.pitch}}&heading={{post.heading}}&key={{MAPS_API_KEY}}"
       class="card-img-top">
     {% endcomment %}
-
-
     <div class="map visually-hidden" id="map{{post.id}}"></div>
     <div class="pano" id="pano{{post.id}}"></div>
     <div class="card-body">
