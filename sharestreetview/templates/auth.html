@@ -2,14 +2,23 @@
 <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
     aria-expanded="false">
-    {{ user.username }}
+    <i class="fas fa-user"></i>
   </a>
-  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
     <li>
-      <form action="{% url 'accounts:logout' %}" method="post">
-        {% csrf_token %}
-        <button>로그아웃</button>
-      </form>
+      <a class="dropdown-item" href="{% url 'accounts:logout' %}">
+        종아요한 글
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="{% url 'accounts:logout' %}">
+        설정
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="{% url 'accounts:logout' %}">
+        로그아웃
+      </a>
     </li>
   </ul>
 </li>

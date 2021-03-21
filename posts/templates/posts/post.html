@@ -1,0 +1,20 @@
+<div class="col">
+  <div class="card">
+    {% comment %}
+    <img
+      src="https://maps.googleapis.com/maps/api/streetview?size=400x400&location={{post.lat}},{{post.lng}}&fov=80&pitch={{post.pitch}}&heading={{post.heading}}&key={{MAPS_API_KEY}}"
+      class="card-img-top">
+    {% endcomment %}
+    <div class="map visually-hidden" id="map{{post.id}}"></div>
+    <div class="pano" id="pano{{post.id}}"></div>
+    <div class="card-body">
+      <h5 class="card-title">
+        <a class="stretched-link" href="{% url 'posts:detail' post.id %}">{{post.title}}</a>
+      </h5>
+      <p class="card-text">{{post.content}}</p>
+    </div>
+    <div class="card-footer text-muted">
+      {{post.user}}
+    </div>
+  </div>
+</div>

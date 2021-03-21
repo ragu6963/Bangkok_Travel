@@ -1,26 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block head %}
-{% endblock head %}
 {% block content %}
-<div class="row row-cols-1 row-cols-md-5 g-4">
-  {% for post in posts %}
-  <div class="col">
-    <div class="card">
-      <img
-        src="https://maps.googleapis.com/maps/api/streetview?size=800x800&location={{post.lat}},{{post.lng}}&fov=80&pitch={{post.pitch}}&heading={{post.heading}}&key={{MAPS_API_KEY}}"
-        class="card-img-top">
-      <div class="card-body">
-        <h5 class="card-title">
-          <a class="stretched-link" href="{% url 'posts:detail' post.id %}">{{post.title}}</a>
-        </h5>
-        <p class="card-text">{{post.content}}</p>
-      </div>
-      <div class="card-footer text-muted">
-        {{post.user}}
-      </div>
-    </div>
+<div class='container-md'>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+    {% for post in posts %}
+    {% include 'posts/post.html' with post=post %}
+    {% endfor %}
   </div>
-  {% endfor %}
 </div>
 {% endblock content %}

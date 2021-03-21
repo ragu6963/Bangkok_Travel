@@ -1,0 +1,88 @@
+{# map 컴포넌트 #}
+<script>
+  function toggleStreetView() {
+    const toggle = panorama.getVisible();
+
+    if (toggle) {
+      panorama.setVisible(false);
+    } else {
+      panorama.setVisible(true);
+    }
+  }
+  let panorama;
+  let map;
+
+  function CenterControl(controlDiv, target) {
+    // Set CSS for the control border.
+    const controlUI = document.createElement("div");
+    controlUI.style.backgroundColor = "#fff";
+    controlUI.style.border = "2px solid #fff";
+    controlUI.style.borderRadius = "3px";
+    controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+    controlUI.style.cursor = "pointer";
+    controlUI.style.marginTop = "8px";
+    controlUI.style.marginBottom = "22px";
+    controlUI.style.textAlign = "center";
+    controlDiv.appendChild(controlUI);
+    // Set CSS for the control interior.
+    const controlText = document.createElement("div");
+    controlText.style.color = "rgb(25,25,25)";
+    controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+    controlText.style.fontSize = "16px";
+    controlText.style.lineHeight = "38px";
+    controlText.style.paddingLeft = "5px";
+    controlText.style.paddingRight = "5px";
+    controlText.innerHTML = "Switch " + target;
+    controlUI.appendChild(controlText);
+    controlDiv.onclick = toggleStreetView;
+    // Setup the click event listeners: simply set the map to Chicago. 
+  }
+
+
+  function initialize() {
+    lat = "{{lat}}"
+    lng = "{{lng}}"
+    heading = "{{heading}}"
+    pitch = "{{pitch}}"
+
+    const astorPlace = {
+      lat: Number(lat),
+      lng: Number(lng),
+    };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: astorPlace,
+      zoom: 14,
+      streetViewControl: false,
+      mapTypeControl: false,
+      fullscreenControl: false,
+      zoomControl: false,
+      rotateControl: false,
+    });
+
+
+    panorama = new google.maps.StreetViewPanorama(
+      document.getElementById("map"), {
+        panControl: false,
+        fullscreenControl: false,
+        addressControl: false,
+      }
+    );
+
+    panorama.setPosition(astorPlace);
+    panorama.setPov(
+      /** @type {google.maps.StreetViewPov} */
+      {
+        heading: Number(heading),
+        pitch: Number(pitch),
+      }
+    );
+    panorama.setVisible(true)
+    const centerControlDiv_map = document.createElement("div");
+    const centerControlDiv_pano = document.createElement("div");
+
+    CenterControl(centerControlDiv_map, "Steet");
+    CenterControl(centerControlDiv_pano, "Map");
+    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(centerControlDiv_map);
+    panorama.controls[google.maps.ControlPosition.RIGHT_TOP].push(centerControlDiv_pano);
+  }
+</script>
