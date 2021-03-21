@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
 {% block content %}
-
-<form action="{% url 'posts:create' %}" method="post">
-  {% csrf_token %}
-  {{ form.media }}
-  {% bootstrap_form form %}
-  {% comment %} {{ form.as_p|safe }} {% endcomment %}
-  {% bootstrap_button "글 작성" button_type="submit" button_class="btn-primary" %}
-</form>
-<a href="{% url 'posts:index' %}">돌아가기</a>
+<div class="container">
+  <form action="{% url 'posts:create' %}" method="post">
+    {% csrf_token %}
+    {{ form.title }}
+    {{ form.media }}
+    {{ form.content }}
+    {% comment %} {{ form.as_p|safe }} {% endcomment %}
+    {% bootstrap_button "글 작성" button_type="submit" button_class="btn-primary" %}
+  </form>
+</div>
 
 {% endblock content %}
