@@ -9,7 +9,7 @@ import requests
 
 @require_safe
 def home(request):
-    posts = Post.objects.all().order_by("-created_at")
+    posts = Post.objects.all().order_by("-pk")
     MAPS_API_KEY = settings.MAPS_API_KEY
     context = {
         "posts": posts,
@@ -24,50 +24,23 @@ def index(request):
     return render(request, "posts/index.html")
 
 
-@login_required(login_url="accounts:login", redirect_field_name="")
+@login_required(login_url="posts:home", redirect_field_name="")
 @require_http_methods(["GET", "POST"])
 def create(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            # url에서 street view 설정 값 추출
-            url = form.cleaned_data["url"]
-            split_url = url.split(",")
-            lat = float(split_url[0].split("@")[1])
-            lng = float(split_url[1])
-            heading = float(split_url[4].replace("h", ""))
-            pitch = float(split_url[5].split("t")[0]) - float(90)
-
             # Post 인스턴스 변수 생성
             post = Post()
 
-            # 데이터 대입
-            post.title = form.cleaned_data["title"]
-            post.content = form.cleaned_data["content"]
-            post.category = form.cleaned_data["category"]
-            post.lat = lat
-            post.lng = lng
-            post.url = url
-            post.heading = heading
-            post.pitch = pitch
-            post.user = request.user
+            # 인스턴스 변수 값 할당
+            post = set_post_data(post, form, request)
+
             # Post 인스턴스 저장
             post.save()
 
-            base_url = (
-                "https://maps.googleapis.com/maps/api/streetview?size=400x400"
-            )
-            static_image_url = f"{base_url}&location={post.lat},{post.lng}&fov=80&pitch={post.pitch}&heading={post.heading}&key={settings.MAPS_API_KEY}"
-            static_image = requests.get(static_image_url)
-            with open(
-                f"{settings.MEDIA_ROOT}/posts/thumnail/{post.id}.jpg", "wb"
-            ) as file:
-                file.write(static_image.content)
-                post.static_image = (
-                    f"{settings.MEDIA_URL}posts/thumnail/{post.id}.jpg"
-                )
-
-            # Post static_image 경로 저장
+            # Post static_image 파일 저장 및 경로 할당
+            post = get_street_view_static(post)
             post.save()
 
             return redirect("posts:home")
@@ -98,30 +71,15 @@ def update(request, pk):
     post = Post.objects.get(pk=pk)
     if post.user != request.user:
         return redirect("posts:detail", post.id)
+
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            # url에서 street view 설정 값 추출
-            url = form.cleaned_data["url"]
-            split_url = url.split(",")
-            lat = split_url[0].split("@")[1]
-            lng = split_url[1]
+            # 인스턴스 변수 값 할당
+            post = set_post_data(post, form, request)
 
-            post.title = form.cleaned_data["title"]
-            post.content = form.cleaned_data["content"]
-            post.category = form.cleaned_data["category"]
-            post.lat = lat
-            post.lng = lng
-            post.url = url
-            base_url = (
-                "https://maps.googleapis.com/maps/api/streetview?size=400x400"
-            )
-            static_image_url = f"{base_url}&location={post.lat},{post.lng}&fov=80&pitch={post.pitch}&heading={post.heading}&key={settings.MAPS_API_KEY}"
-            static_image = requests.get(static_image_url)
-            with open(
-                f"{settings.MEDIA_ROOT}/posts/thumnail/{post.id}.jpg", "wb"
-            ) as file:
-                file.write(static_image.content)
+            # Post static_image 파일 저장 및 경로 할당
+            post = get_street_view_static(post)
 
             # 수정사항 저장
             post.save()
@@ -156,3 +114,43 @@ def delete(request, pk):
         return redirect("posts:home")
 
     return redirect("posts:detail", post.id)
+
+
+def set_post_data(post, form, request):
+    url = form.cleaned_data["url"]
+    lat, lng, heading, pitch = get_street_view_option(url)
+
+    post.title = form.cleaned_data["title"]
+    post.content = form.cleaned_data["content"]
+    post.category = form.cleaned_data["category"]
+    post.lat = lat
+    post.lng = lng
+    post.heading = heading
+    post.pitch = pitch
+    post.url = url
+    post.user = request.user
+
+    return post
+
+
+def get_street_view_option(url):
+    split_url = url.split(",")
+    lat = float(split_url[0].split("@")[1])
+    lng = float(split_url[1])
+    heading = float(split_url[4].replace("h", ""))
+    pitch = float(split_url[5].split("t")[0]) - float(90)
+
+    return lat, lng, heading, pitch
+
+
+def get_street_view_static(post):
+    base_url = "https://maps.googleapis.com/maps/api/streetview?size=400x400"
+    static_image_url = f"{base_url}&location={post.lat},{post.lng}&fov=80&pitch={post.pitch}&heading={post.heading}&key={settings.MAPS_API_KEY}"
+    static_image = requests.get(static_image_url)
+    with open(
+        f"{settings.MEDIA_ROOT}/posts/thumnail/{post.id}.jpg", "wb"
+    ) as file:
+        file.write(static_image.content)
+        post.static_image = f"{settings.MEDIA_URL}posts/thumnail/{post.id}.jpg"
+
+    return post

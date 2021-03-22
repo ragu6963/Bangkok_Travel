@@ -28,7 +28,7 @@ class PostForm(forms.Form):
         ("oceania", "오세아니아"),
         ("africa", "아프리카"),
     ]
-    # category = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
+    category = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
     url = forms.URLField(
         label="",
         label_suffix="",
