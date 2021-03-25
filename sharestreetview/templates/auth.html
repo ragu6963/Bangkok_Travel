@@ -23,9 +23,13 @@
   </ul>
 </li>
 {% else %}
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  로그인
-</button>
+<li class="nav-item d-flex flex-column justify-content-center">
+  <button type="button" class="bttn-unite bttn-xs bttn-success text-decoration-none" data-bs-toggle="modal"
+    data-bs-target="#exampleModal">
+    로그인
+  </button>
+</li>
+
 {% include "login_modal.html" %}
 
 {% endif %}

@@ -6,15 +6,3 @@
 # heading = lst[5].split("t")[0]
 # print(lst)
 # print(lat, lng, pitch, heading)
-import requests
-
-MAPS_API_KEY = "AIzaSyDs_7L7DY1NhNiII1fe29gZ4Ap4-ZKyw4Y"
-static_image = requests.get(
-    f"https://maps.googleapis.com/maps/api/streetview?size=400x400&location=11.0,11.0&fov=80&key=AIzaSyDs_7L7DY1NhNiII1fe29gZ4Ap4-ZKyw4Y"
-)
-static_image = requests.get(
-    f"https://maps.googleapis.com/maps/api/streetview?size=400x400&location=27.1739164,78.0432149&fov=80&pitch=7.859999999999999&heading=264.8&key=AIzaSyDs_7L7DY1NhNiII1fe29gZ4Ap4-ZKyw4Y"
-)
-print(static_image)
-with open("hyderabad.png", "wb") as file:
-    file.write(static_image.content)

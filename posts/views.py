@@ -122,7 +122,6 @@ def set_post_data(post, form, request):
 
     post.title = form.cleaned_data["title"]
     post.content = form.cleaned_data["content"]
-    post.category = form.cleaned_data["category"]
     post.lat = lat
     post.lng = lng
     post.heading = heading

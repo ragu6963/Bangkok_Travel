@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
-{% load bootstrap5 %}
 {% block content %}
-<div class="container">
-  <form action="{% url 'posts:create' %}" method="post">
-    {% csrf_token %}
-    {{ form.title }}
-    {{ form.media }}
-    {{ form.content }}
-    {{ form.category }}
-    {{ form.url }}
-    {% comment %} {{ form.as_p|safe }} {% endcomment %}
-    {% bootstrap_button "글 작성" button_type="submit" button_class="btn-primary" %}
-  </form>
+<div class="container row">
+  <div class="col-9 offset-3">
+    <form action="{% url 'posts:create' %}" method="post">
+      {% csrf_token %}
+      {{ form.title }}
+      {{ form.url }}
+      {{ form.media }}
+      {{ form.content }}
+      <button class="btn btn-primary">글 작성</button>
+    </form>
+  </div>
 </div>
 
 {% endblock content %}

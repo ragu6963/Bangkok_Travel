@@ -159,3 +159,43 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
 
 MEDIA_URL = "/media/"
+
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "skin": "moono",
+        # "skin": "office2013",
+        "toolbar_YourCustomToolbarConfig": [
+            {
+                "name": "styles",
+                "items": ["Styles", "Format", "Font", "FontSize"],
+            },
+            {"name": "colors", "items": ["TextColor", "BGColor"]},
+            {
+                "name": "paragraph",
+                "items": [
+                    "NumberedList",
+                    "BulletedList",
+                    "-",
+                    "Outdent",
+                    "Indent",
+                    "-",
+                    "Blockquote",
+                    "CreateDiv",
+                    "-",
+                    "JustifyLeft",
+                    "JustifyCenter",
+                    "JustifyRight",
+                    "JustifyBlock",
+                    "-",
+                    "BidiLtr",
+                    "BidiRtl",
+                    "Language",
+                ],
+            },
+        ],
+        "toolbar": "YourCustomToolbarConfig",
+        "width": "100%",
+        "tabSpaces": 2,
+    }
+}
