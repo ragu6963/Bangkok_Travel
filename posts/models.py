@@ -1,11 +1,12 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
 
 class Post(models.Model):
     # user 관계 생성
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     # content = models.TextField()
     content = RichTextField()
@@ -21,5 +22,13 @@ class Post(models.Model):
     url = models.URLField(default="")
     # static street view image 경로
     static_image = models.ImageField(default="static/img/default.png")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    content = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -41,9 +41,32 @@
   <div class="d-flex justify-content-center mb-5">
     <div class="map" id="map"></div>
   </div>
-  <div>
+  <div class="mb-5">
     {{ post.content|safe }}
   </div>
+  <div class="mb-3">
+    <form action="{% url 'posts:comment_create' post.pk %}" method="POST">
+      {% csrf_token %}
+      {{ commentform.as_p }}
+      <button class="d-block ms-auto bttn-material-flat bttn-sm bttn-success">댓글 작성</button>
+    </form>
+  </div>
+  {% for comment in comments %}
+  <div class="d-flex flex-column mb-4">
+    <div class="d-flex flex-column fs-7 mb-2">
+      <div class="fw-bold">{{ comment.user }}</div>
+      <div class="text-secondary">{{ comment.created_at|date:"Y년 m월 d일" }}</div>
+    </div>
+    <div class="fs-5">
+      {{ comment.content }}
+    </div>
+    <hr>
+  </div>
+  {% endfor %}
+
+
+
+
   {% include "api_key.html" with MAPS_API_KEY=MAPS_API_KEY %}
 </div>
 {% endblock content %}
