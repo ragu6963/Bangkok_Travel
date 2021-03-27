@@ -1,5 +1,5 @@
 {% if user.is_authenticated %}
-<li class="nav-item dropdown">
+<li class="nav-item dropdown d-flex flex-column justify-content-center">
   <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
     aria-expanded="false">
     <i class="fas fa-user"></i>
@@ -24,8 +24,8 @@
 </li>
 {% else %}
 <li class="nav-item d-flex flex-column justify-content-center">
-  <button type="button" class="bttn-unite bttn-xs bttn-success text-decoration-none" data-bs-toggle="modal"
-    data-bs-target="#exampleModal">
+  <button type="button" class="bttn-unite bttn-sm bttn-success text-decoration-none" data-bs-toggle="modal"
+    data-bs-target="#loginModal">
     로그인
   </button>
 </li>
