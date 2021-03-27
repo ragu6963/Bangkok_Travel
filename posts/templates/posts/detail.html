@@ -20,8 +20,9 @@
   {% if post.user == user %}
   <div class="d-flex justify-content-end gap-2 mb-3">
     <a class="text-decoration-none text-muted fs-7" href="{% url 'posts:update' post.id %}">수정</a>
-    <a class="text-decoration-none text-muted fs-7" href="">삭제</a>
+    <a class="text-decoration-none text-muted fs-7" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal">삭제</a>
   </div>
+  {% include "posts/delete.html" %}
   {% endif %}
 
   {# 글쓴이 최근 수정날짜 #}
@@ -37,7 +38,7 @@
     </span>
   </div>
 
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center mb-5">
     <div class="map" id="map"></div>
   </div>
   <div>
