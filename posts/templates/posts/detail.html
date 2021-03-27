@@ -44,6 +44,18 @@
   <div>
     {{ post.content|safe }}
   </div>
+
+  {% for comment in comments %}
+  {{ comment.content }}
+  {% endfor %}
+
+  <form action="{% url 'posts:comment_create' post.pk %}" method="POST">
+    {% csrf_token %}
+    {{ commentform.as_p }}
+    <button>댓글작성</button>
+  </form>
+
+
   {% include "api_key.html" with MAPS_API_KEY=MAPS_API_KEY %}
 </div>
 {% endblock content %}

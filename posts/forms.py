@@ -1,4 +1,5 @@
 from django import forms
+from .models import Comment
 from ckeditor.widgets import CKEditorWidget
 
 
@@ -39,3 +40,12 @@ class PostForm(forms.Form):
         ("africa", "아프리카"),
     ]
     # category = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = [
+            "post",
+            "user",
+        ]
