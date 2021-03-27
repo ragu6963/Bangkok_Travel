@@ -10,7 +10,8 @@ class PostForm(forms.Form):
         label_suffix="",
         widget=forms.TextInput(
             attrs={
-                "placeholder": "제목을 입력하세요",
+                "autocomplete": "off",
+                "placeholder": "제목을 작성하세요",
                 "class": "form-control form-control-lg mb-3",
             }
         ),
@@ -20,7 +21,8 @@ class PostForm(forms.Form):
         label_suffix="",
         widget=forms.URLInput(
             attrs={
-                "placeholder": "구글 스트리트뷰 주소를 입력해주세요",
+                "autocomplete": "off",
+                "placeholder": "구글 스트리트뷰 주소를 작성하세요",
                 "class": "form-control form-control-sm mb-3",
             }
         ),
@@ -43,6 +45,18 @@ class PostForm(forms.Form):
 
 
 class CommentForm(forms.ModelForm):
+    content = forms.CharField(
+        label="",
+        label_suffix="",
+        widget=forms.TextInput(
+            attrs={
+                "autocomplete": "off",
+                "placeholder": "댓글을 작성하세요",
+                "class": "form-control",
+            }
+        ),
+    )
+
     class Meta:
         model = Comment
         exclude = [
