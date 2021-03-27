@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
-{% load bootstrap5 %}
 {% block content %}
-<form action="{% url 'posts:update' post.id %}" method="post">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  {% bootstrap_button "글 작성" button_type="submit" button_class="btn-primary" %}
-</form>
-<a href="{% url 'posts:detail' post.id %}">돌아가기</a>
+<div class="d-flex justify-content-center">
+  <form action="{% url 'posts:create' %}" method="post">
+    {% csrf_token %}
+    {{ form.title }}
+    {{ form.url }}
+    {{ form.media }}
+    {{ form.content }}
+    <div>
+      <button class="d-block ms-auto bttn-material-flat bttn-md bttn-success">글 작성</button>
+    </div>
+  </form>
+</div>
 
 {% endblock content %}

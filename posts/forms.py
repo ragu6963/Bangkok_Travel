@@ -10,7 +10,7 @@ class PostForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "placeholder": "제목을 입력하세요",
-                "class": "form-control form-control-lg",
+                "class": "form-control form-control-lg mb-3",
             }
         ),
     )
@@ -20,15 +20,14 @@ class PostForm(forms.Form):
         widget=forms.URLInput(
             attrs={
                 "placeholder": "구글 스트리트뷰 주소를 입력해주세요",
-                "class": "form-control form-control-sm",
+                "class": "form-control form-control-sm mb-3",
             }
         ),
     )
-    # content = forms.CharField(widget=forms.Textarea)
     content = forms.CharField(
         label="",
         label_suffix="",
-        widget=CKEditorWidget(attrs={}),
+        widget=CKEditorWidget(),
     )
 
     CHOICES = [
@@ -40,12 +39,3 @@ class PostForm(forms.Form):
         ("africa", "아프리카"),
     ]
     # category = forms.ChoiceField(widget=forms.Select, choices=CHOICES)
-    url = forms.URLField(
-        label="",
-        label_suffix="",
-        widget=forms.URLInput(
-            attrs={
-                "placeholder": "구글 스트리트뷰 주소를 입력해주세요",
-            }
-        ),
-    )
