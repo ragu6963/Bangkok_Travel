@@ -22,6 +22,9 @@ class Post(models.Model):
     url = models.URLField(default="")
     # static street view image 경로
     static_image = models.ImageField(default="static/img/default.png")
+    # 좋아요 User:Post = N:M
+    like = models.ManyToManyField(User, related_name="likes", blank=True)
+    like_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
