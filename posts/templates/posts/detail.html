@@ -5,27 +5,28 @@
 {# google map Api 설정 스크립트 #}
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 {# map script 컴포넌트 #}
-{% include 'posts/map.html' with lat=post.lat lng=post.lng heading=post.heading pitch=post.pitch  %}
+{% include 'posts/detail/map.html' with lat=post.lat lng=post.lng heading=post.heading pitch=post.pitch  %}
 <link rel="stylesheet" href="{% static 'css/map.css' %}">
 <link rel="stylesheet" href="{% static 'posts/css/detail.css' %}">
 {% endblock head %}
 
 {% block content %}
-<div class='container'>
+<div class="container">
   {# 제목 #}
   <div class="mb-3">
     <p class="fw-bolder fs-1">{{ post.title }}</p>
   </div>
   {# 수정 삭제 버튼 #}
-  {% if post.user == user %}
+  {% if post.user == request.user %}
   <div class="d-flex justify-content-end gap-2 mb-3">
     <a class="text-decoration-none text-muted fs-7" href="{% url 'posts:update' post.id %}">수정</a>
     <a class="text-decoration-none text-muted fs-7" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal">삭제</a>
   </div>
-  {% include "posts/delete.html" %}
+  {# 삭제 modal #}
+  {% include "posts/detail/delete.html" %}
   {% endif %}
 
-  {% comment %} 글 헤더 영역 {% endcomment %}
+  {# 글 헤더 영역 #}
   <div class="d-flex mb-3 align-items-center gap-1">
     <span class="fw-bold fs-7 d-inline">
       <a class="text-decoration-none text-dark fw-bold" href="">{{ post.user }}</a>
@@ -38,24 +39,22 @@
     </span>
   </div>
 
-  {% comment %} map 영엉 {% endcomment %}
+  {# 지도 영역 #}
   <div class="d-flex justify-content-center mb-5">
     <div class="map" id="map"></div>
   </div>
 
-  {% comment %} 글 내용 영역 {% endcomment %}
+  {# 글 내용 영역 #}
   <div class="mb-5">
     {{ post.content|safe }}
   </div>
 
-  {% comment %} 좋아요 영역 {% endcomment %}
-  {% include "posts/like.html" %}
+  {# 좋아요 영역 #}
+  {% include "posts/detail/like.html" %}
 
-  {% comment %} 댓글 영역 {% endcomment %}
-  {% include "posts/comment.html" %}
+  {# 댓글 영역 #}
+  {% include "posts/detail/comment.html" %}
 
   {% include "api_key.html" with MAPS_API_KEY=MAPS_API_KEY %}
 </div>
-
-
 {% endblock content %}
