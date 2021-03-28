@@ -12,10 +12,8 @@ import json
 @require_safe
 def home(request):
     posts = Post.objects.all().order_by("-created_at")
-    MAPS_API_KEY = settings.MAPS_API_KEY
     context = {
         "posts": posts,
-        "MAPS_API_KEY": MAPS_API_KEY,
     }
     return render(request, "posts/home.html", context)
 
@@ -123,20 +121,22 @@ def delete(request, post_pk):
     return redirect("posts:detail", post.id)
 
 
-def set_post_data(post, form, request):
-    url = form.cleaned_data["url"]
-    lat, lng, heading, pitch = get_street_view_option(url)
+@login_required(login_url="accounts:login", redirect_field_name="")
+@require_http_methods(["POST"])
+def comment_create(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    commentform = CommentForm(request.POST)
+    if commentform.is_valid():
+        comment = commentform.save(commit=False)
+        comment.post = post
+        comment.user = request.user
+        comment.save()
+        return redirect("posts:detail", post.pk)
 
-    post.title = form.cleaned_data["title"]
-    post.content = form.cleaned_data["content"]
-    post.lat = lat
-    post.lng = lng
-    post.heading = heading
-    post.pitch = pitch
-    post.url = url
-    post.user = request.user
-
-    return post
+    context = {
+        "commentform": commentform,
+    }
+    return render(request, "posts/detail.html", context)
 
 
 @require_safe
@@ -160,7 +160,6 @@ def like(request):
                 state = "좋아요"
 
             post.save()
-            # post.like.count() : 게시물이 받은 좋아요 수
             context = {
                 "like_count": post.like_count,
                 "state": state,
@@ -168,6 +167,35 @@ def like(request):
             return HttpResponse(
                 json.dumps(context), content_type="application/json"
             )
+
+
+@require_safe
+def like_list(request):
+    if request.user.is_authenticated:
+        posts = request.user.likes.all()
+        context = {
+            "posts": posts,
+        }
+        return render(request, "posts/home.html", context)
+
+    else:
+        return redirect("posts:home")
+
+
+def set_post_data(post, form, request):
+    url = form.cleaned_data["url"]
+    lat, lng, heading, pitch = get_street_view_option(url)
+
+    post.title = form.cleaned_data["title"]
+    post.content = form.cleaned_data["content"]
+    post.lat = lat
+    post.lng = lng
+    post.heading = heading
+    post.pitch = pitch
+    post.url = url
+    post.user = request.user
+
+    return post
 
 
 def get_street_view_option(url):
@@ -191,21 +219,3 @@ def get_street_view_static(post):
         post.static_image = f"{settings.MEDIA_URL}posts/thumnail/{post.id}.jpg"
 
     return post
-
-
-@login_required(login_url="accounts:login", redirect_field_name="")
-@require_http_methods(["POST"])
-def comment_create(request, post_pk):
-    post = get_object_or_404(Post, pk=post_pk)
-    commentform = CommentForm(request.POST)
-    if commentform.is_valid():
-        comment = commentform.save(commit=False)
-        comment.post = post
-        comment.user = request.user
-        comment.save()
-        return redirect("posts:detail", post.pk)
-
-    context = {
-        "commentform": commentform,
-    }
-    return render(request, "posts/detail.html", context)

@@ -15,4 +15,5 @@ urlpatterns = [
         name="comment_create",
     ),
     path("like/", views.like, name="like"),
+    path("like_list/", views.like_list, name="like_list"),
 ]
