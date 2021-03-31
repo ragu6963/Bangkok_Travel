@@ -1,0 +1,90 @@
+{% comment %} 댓글 작성 Form {% endcomment %}
+{% if request.user.is_authenticated %}
+<div class="mb-3">
+  {% comment %} <form action="{% url 'posts:comment_create' post.pk %}" method="POST"> {% endcomment %}
+    {% csrf_token %}
+    {{ commentform.as_p }}
+    <button id="{{ post.id }}" class="d-block ms-auto bttn-material-flat bttn-sm bttn-success"
+      onclick="comment_create(this.id)">댓글 작성</button>
+    {% comment %} </form> {% endcomment %}
+</div>
+{% endif %}
+
+{% comment %} 댓글 내용 영역 {% endcomment %}
+<div id="comment_list" class="d-flex flex-column mb-4">
+  {% for comment in comments %}
+  <div class="fs-7 mb-2">
+    <div class="fw-bold">{{ comment.user }}</div>
+    <div class="text-secondary">{{ comment.created_at|date:"Y년 m월 d일" }}</div>
+  </div>
+  <div class="fs-5">
+    {{ comment.content }}
+  </div>
+  <hr>
+  {% endfor %}
+</div>
+
+<script>
+  let csrftoken;
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  csrftoken = getCookie('csrftoken');
+
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
+
+  function comment_create(id) {
+    url = "{% url 'posts:comment_create' post.pk %}"
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: {
+        "content": $("#id_content").val(),
+        "csrfmiddlewaretoken": csrftoken,
+      },
+      dataType: "json",
+      success: function (response) {
+        content = response.content
+        user = response.user
+        created_at = new Date(response.created_at)
+        year = created_at.getFullYear()
+        month = created_at.getMonth() + 1
+        day = created_at.getDate()
+
+        $('#comment_list').append(
+          '<div class="fs-7 mb-2">' +
+          '<div class="fw-bold">' + user + '</div>' +
+          '<div class="text-secondary">' + year + "년 " + month + "월 " + day + "일" + '</div>' +
+          '</div>' +
+          '<div class="fs-5">' + content + '</div>' +
+          '<hr>'
+        );
+
+      },
+    })
+  }
+</script>

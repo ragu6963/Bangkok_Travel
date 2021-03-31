@@ -5,8 +5,9 @@ from .forms import PostForm, CommentForm
 from django.views.decorators.http import require_http_methods, require_safe
 from django.contrib.auth.decorators import login_required
 import requests
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 @require_safe
@@ -121,22 +122,28 @@ def delete(request, post_pk):
     return redirect("posts:detail", post.id)
 
 
-@login_required(login_url="accounts:login", redirect_field_name="")
 @require_http_methods(["POST"])
 def comment_create(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
-    commentform = CommentForm(request.POST)
-    if commentform.is_valid():
-        comment = commentform.save(commit=False)
-        comment.post = post
-        comment.user = request.user
-        comment.save()
-        return redirect("posts:detail", post.pk)
+    if request.is_ajax() and request.user.is_authenticated:
+        commentform = CommentForm(request.POST)
 
-    context = {
-        "commentform": commentform,
-    }
-    return render(request, "posts/detail.html", context)
+        if commentform.is_valid():
+            comment = commentform.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+            context = {
+                "content": comment.content,
+                "user": comment.user.username,
+                "created_at": comment.created_at,
+            }
+            return HttpResponse(
+                json.dumps(context, cls=DjangoJSONEncoder),
+                content_type="application/json",
+            )
+
+    return redirect("posts:detail", post_pk)
 
 
 @require_safe
