@@ -3,6 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=vscode
 
 ### vscode ###
+migrations
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
