@@ -9,7 +9,7 @@ class Post(models.Model):
     content = models.TextField()
 
     # 대륙 카테고리
-    category = models.TextField(default="아시아")
+    # category = models.TextField(default="아시아")
 
     # # 위도 경도
     # lat = models.FloatField()
