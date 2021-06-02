@@ -29,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# CORS 설정
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -106,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-CORS_ALLOWED_ORIGINS = ["http://192.168.0.2:8080"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -133,4 +134,5 @@ import datetime
 
 JWT_AUTH = {
     "JWT_EXPIRATION_DELTA": datetime.timedelta(days=1),
+    "JWT_PAYLOAD_HANDLER": "accounts.views.jwt_payload_handler",
 }

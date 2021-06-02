@@ -10,6 +10,14 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import get_user_model
 from .models import User
 from django.conf import settings
+from rest_framework_jwt import utils
+
+
+def jwt_payload_handler(user):
+    payload = utils.jwt_payload_handler(user)
+    payload["is_staff"] = user.is_staff
+    payload["is_superuser"] = user.is_superuser
+    return payload
 
 
 @api_view(["POST"])
