@@ -136,3 +136,7 @@ JWT_AUTH = {
     "JWT_EXPIRATION_DELTA": datetime.timedelta(days=1),
     "JWT_PAYLOAD_HANDLER": "accounts.views.jwt_payload_handler",
 }
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+MEDIA_URL = "/media/"

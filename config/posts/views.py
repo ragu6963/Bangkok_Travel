@@ -1,3 +1,7 @@
+import requests
+import uuid
+from decouple import config
+
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 
@@ -10,6 +14,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from posts.models import Post
 from posts.serializers import PostSerializer
+from django.conf import settings
+import base64
+import urllib.request
+
+MAPS_API_KEY = config("MAPS_API_KEY")
 
 
 class PostListCreate(APIView):
@@ -25,7 +34,7 @@ class PostListCreate(APIView):
 
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            post = serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
