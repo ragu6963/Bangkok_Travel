@@ -14,13 +14,17 @@ MAPS_API_KEY = config("MAPS_API_KEY")
 
 class PostSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    user = serializers.ReadOnlyField(source="user.username")
+    username = serializers.ReadOnlyField(source="user.username")
+    profile = serializers.ImageField(source="user.profile", read_only=True)
     user_id = serializers.ReadOnlyField(source="user.id")
     title = serializers.CharField()
     content = serializers.CharField()
     url = serializers.URLField()
     cover = serializers.ImageField(read_only=True)
     like = UserSerializer(many=True, read_only=True)
+
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
 
     def create(self, validated_data):
         url = validated_data["url"]
@@ -30,9 +34,7 @@ class PostSerializer(serializers.Serializer):
         pitch = float(split_url[5].split("t")[0]) - float(90)
         heading = float(split_url[4].replace("h", ""))
 
-        base_url = (
-            "https://maps.googleapis.com/maps/api/streetview?size=400x400"
-        )
+        base_url = "https://maps.googleapis.com/maps/api/streetview?size=400x400"
 
         request_url = f"{base_url}&location={lat},{lng}&fov=80&pitch={pitch}&heading={heading}&key={MAPS_API_KEY}"
         image_name = f"{uuid.uuid4()}.jpg"

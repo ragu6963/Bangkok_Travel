@@ -47,3 +47,13 @@ class PostDetailUpdateDelete(APIView):
         post = get_object_or_404(Post, pk=post_id)
         serializer = PostSerializer(post)
         return Response(serializer.data)
+
+
+class UserPostList(APIView):
+    authentication_classes = [JSONWebTokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, user_id, format=None):
+        posts = Post.objects.filter(user_id=user_id)
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
